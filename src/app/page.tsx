@@ -93,7 +93,7 @@ export default function Home() {
               className={`${raleway.className} font-bold flex items-center justify-center gap-3 md:gap-8 text-[#697b7f] pt-3 pb-2 md:p-5`}
             >
               <p className="text-xs md:text-2xl text-right">
-                10:00
+                10:30
                 <br />
                 A.M
               </p>
