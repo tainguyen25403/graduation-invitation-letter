@@ -32,6 +32,8 @@ export default function Home() {
   const [message, setMessage] = useState("");
   const [showSticker, setShowSticker] = useState(false);
   const [selectedGif, setSelectedGif] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   // Placeholder GIF arrays - you can replace these URLs later
   const yesGifs = [
@@ -63,9 +65,9 @@ export default function Home() {
       <Card className="max-w-3xl mx-auto p-0 md:p-0 bg-[#F6F6E9] backdrop-blur border-0 shadow-lg rounded-2xl overflow-hidden">
         <div className="relative">
           {/* Watercolor leaves decoration - top */}
-          <div className="absolute top-0 left-0 right-0 h-32 bg-[url('/leaves-top.svg')] bg-contain bg-no-repeat bg-top background-" />
-          <div className="absolute top-0 bottom-0 right-0 w-13 md:w-25 bg-[url('/leaves-right.svg')] bg-contain bg-no-repeat bg-right" />
-          <div className="absolute top-0 bottom-0 left-0 w-13 md:w-25 bg-[url('/leaves-left.svg')] bg-contain bg-no-repeat bg-left" />
+          <div className="absolute top-0 left-0 right-0 h-32 bg-[url('/graduation-invitation-letter/leaves-top.svg')] bg-contain bg-no-repeat bg-top z-0" />
+          <div className="absolute top-0 bottom-0 right-0 w-13 md:w-25 bg-[url('/graduation-invitation-letter/leaves-right.svg')] bg-contain bg-no-repeat bg-right z-0" />
+          <div className="absolute top-0 bottom-0 left-0 w-13 md:w-25 bg-[url('/graduation-invitation-letter/leaves-left.svg')] bg-contain bg-no-repeat bg-left z-0" />
           {/* Add a spacer to push content below the image if needed */}
 
           <div className="pt-12 pb-2 md:pt-24 md:pb-16">
@@ -126,7 +128,7 @@ export default function Home() {
             <div
               className={`${raleway.className} max-w-md px-14 mx-auto space-y-3 md:space-y-6 pt-3 pb-3 md:pt-8`}
             >
-              <div className="space-y-3 md:space-y-3 bg-[#F6F6E9] p-3 md:p-6 rounded-xl border border-[#3f618f]/30 relative h-[450px]">
+              <div className="space-y-3 md:space-y-3 bg-[#F6F6E9] p-3 md:p-6 rounded-xl border border-[#3f618f]/30 relative h-[420px] md:h-[450px] z-10">
                 {showSticker ? (
                   <div className="absolute inset-0 flex items-center justify-center bg-[#F6F6E9] rounded-xl">
                     <div className="text-center space-y-4">
@@ -201,56 +203,69 @@ export default function Home() {
                       />
                     </div>
 
-                    <Button
-                      className="w-full bg-[#3f618f] hover:bg-[#1d3a6e] text-white font-medium tracking-wider shadow-md transform hover:translate-y-[-2px] transition-all duration-200"
-                      onClick={async () => {
-                        if (!name) {
-                          alert("Please enter your name");
-                          return;
-                        }
-                        if (!attendance) {
-                          alert("Please select if you can join");
-                          return;
-                        }
-
-                        const webhookUrl =
-                          "https://discord.com/api/webhooks/1378671844839919676/IfVm18sbuh241ApdrHWBjbviN8mzgkh8_qxz6gkkd16dRm7uYRGfdsfpMZpaCMFjEdkN";
-                        const content = `🎓 New RSVP Received!\n\n👤 Name: ${name}\n✅ Attendance: ${attendance}\n💭 Message: ${
-                          message || "No message"
-                        }`;
-
-                        try {
-                          const response = await fetch(webhookUrl, {
-                            method: "POST",
-                            headers: {
-                              "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({ content }),
-                          });
-
-                          if (response.ok) {
-                            // Select random gif based on attendance
-                            const gifs =
-                              attendance === "yes" ? yesGifs : noGifs;
-                            const randomIndex = Math.floor(
-                              Math.random() * gifs.length
-                            );
-                            setSelectedGif(gifs[randomIndex]);
-
-                            setShowSticker(true);
-                            setName("");
-                            setAttendance("");
-                            setMessage("");
-                          } else {
-                            alert("Failed to send RSVP. Please try again.");
+                    <div className="space-y-3 z-10">
+                      <Button
+                        className="w-full bg-[#3f618f] hover:bg-[#1d3a6e] active:bg-[#1d3a6e] text-white font-medium tracking-wider shadow-md transform hover:translate-y-[-2px] active:translate-y-0 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed py-6 md:py-4 text-lg touch-manipulation"
+                        onTouchEnd={async () => {
+                          setError("");
+                          if (!name) {
+                            setError("Please enter your name");
+                            return;
                           }
-                        } catch {
-                          alert("Error sending RSVP. Please try again.");
-                        }
-                      }}
-                    >
-                      SEND
-                    </Button>
+                          if (!attendance) {
+                            setError("Please select if you can join");
+                            return;
+                          }
+                          console.log("Clicked");
+                          setIsLoading(true);
+                          const webhookUrl =
+                            "https://discord.com/api/webhooks/1378671844839919676/IfVm18sbuh241ApdrHWBjbviN8mzgkh8_qxz6gkkd16dRm7uYRGfdsfpMZpaCMFjEdkN";
+                          const content = `🎓 New RSVP Received!\n\n👤 Name: ${name}\n✅ Attendance: ${attendance}\n💭 Message: ${
+                            message || "No message"
+                          }`;
+
+                          try {
+                            const response = await fetch(webhookUrl, {
+                              method: "POST",
+                              headers: {
+                                "Content-Type": "application/json",
+                              },
+                              body: JSON.stringify({ content }),
+                            });
+
+                            if (response.ok) {
+                              const gifs =
+                                attendance === "yes" ? yesGifs : noGifs;
+                              const randomIndex = Math.floor(
+                                Math.random() * gifs.length
+                              );
+                              setSelectedGif(gifs[randomIndex]);
+
+                              setShowSticker(true);
+                              setName("");
+                              setAttendance("");
+                              setMessage("");
+                            } else {
+                              setError(
+                                "Failed to send RSVP. Please try again."
+                              );
+                            }
+                          } catch {
+                            setError("Error sending RSVP. Please try again.");
+                          } finally {
+                            setIsLoading(false);
+                          }
+                        }}
+                        disabled={isLoading}
+                      >
+                        {isLoading ? "Sending..." : "SEND"}
+                      </Button>
+                      {error && (
+                        <p className="text-red-500 text-sm text-center font-medium">
+                          {error}
+                        </p>
+                      )}
+                    </div>
                   </>
                 )}
               </div>
@@ -258,7 +273,7 @@ export default function Home() {
           </div>
           <div className="h-5" />
           {/* Watercolor leaves decoration - bottom */}
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-[url('/leaves-bottom.svg')] bg-contain bg-no-repeat bg-bottom" />
+          <div className="absolute bottom-0 left-0 right-0 h-32 bg-[url('/graduation-invitation-letter/leaves-bottom.svg')] bg-contain bg-no-repeat bg-bottom z-0" />
         </div>
       </Card>
     </main>
