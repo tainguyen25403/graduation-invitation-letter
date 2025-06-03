@@ -63,9 +63,9 @@ export default function Home() {
       <Card className="max-w-3xl mx-auto p-0 md:p-0 bg-[#F6F6E9] backdrop-blur border-0 shadow-lg rounded-2xl overflow-hidden">
         <div className="relative">
           {/* Watercolor leaves decoration - top */}
-          <div className="absolute top-0 left-0 right-0 h-32 bg-[url('/leaves-top.svg')] bg-contain bg-no-repeat bg-top background-" />
-          <div className="absolute top-0 bottom-0 right-0 w-13 md:w-25 bg-[url('/leaves-right.svg')] bg-contain bg-no-repeat bg-right" />
-          <div className="absolute top-0 bottom-0 left-0 w-13 md:w-25 bg-[url('/leaves-left.svg')] bg-contain bg-no-repeat bg-left" />
+          <div className="absolute top-0 left-0 right-0 h-32 bg-[url('/graduation-invitation-letter/leaves-top.svg')] bg-contain bg-no-repeat bg-top background-" />
+          <div className="absolute top-0 bottom-0 right-0 w-13 md:w-25 bg-[url('/graduation-invitation-letter/leaves-right.svg')] bg-contain bg-no-repeat bg-right" />
+          <div className="absolute top-0 bottom-0 left-0 w-13 md:w-25 bg-[url('/graduation-invitation-letter/leaves-left.svg')] bg-contain bg-no-repeat bg-left" />
           {/* Add a spacer to push content below the image if needed */}
 
           <div className="pt-12 pb-2 md:pt-24 md:pb-16">
