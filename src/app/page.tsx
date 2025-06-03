@@ -206,7 +206,7 @@ export default function Home() {
                     <div className="space-y-3 z-10">
                       <Button
                         className="w-full bg-[#3f618f] hover:bg-[#1d3a6e] active:bg-[#1d3a6e] text-white font-medium tracking-wider shadow-md transform hover:translate-y-[-2px] active:translate-y-0 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed py-6 md:py-4 text-lg touch-manipulation"
-                        onTouchEnd={async () => {
+                        onClick={async () => {
                           setError("");
                           if (!name) {
                             setError("Please enter your name");
