@@ -258,7 +258,7 @@ export default function Home() {
           </div>
           <div className="h-5" />
           {/* Watercolor leaves decoration - bottom */}
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-[url('/leaves-bottom.svg')] bg-contain bg-no-repeat bg-bottom" />
+          <div className="absolute bottom-0 left-0 right-0 h-32 bg-[url('/graduation-invitation-letter/leaves-bottom.svg')] bg-contain bg-no-repeat bg-bottom" />
         </div>
       </Card>
     </main>
